@@ -56,10 +56,15 @@ def rec_book():
         return u'别看书了,去看片吧!'
     message = ''
     message += u'标题: %s\n' % data.get('title')
-    message += u'作者: %s\n' % data.get('author')
+    message += u'作者: %s\n' % data.get('author', ['未知'])[0]
     message += u'简介: %s\n' % data.get('summary')
     message += u'链接: %s' % data.get('alt')
     return message
+
+
+def rec_girls():
+    key = random.randint(100, 2141)
+    return 'http://jandan.net/ooxx/page-{}#comments'.format(key)
 
 
 def recommend_small_movie():
@@ -134,6 +139,9 @@ def rec_tec_art():
         return '[{}] {}'.format(d.get('title'), d.get('url') or d.get('text'))
     except:
         return '哎呀,看什么技术文章啊,看个电影不好吗'
+
+
+
 
 
 def rec_zhihu():

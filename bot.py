@@ -54,7 +54,8 @@ class TulingWXBot(WXBot):
             u'推荐歌曲': 'rec_music',
             u'技术文章': 'rec_tec_art',
             u'推荐电影': 'rec_film',
-            u'推荐书': 'rec_book'
+            u'推荐书': 'rec_book',
+            u'妹子图': 'rec_girls'
         }
 
         for k, v in REC_MAP.iteritems():
@@ -93,7 +94,7 @@ class TulingWXBot(WXBot):
                     self.send_msg_by_uid(u'来了!', msg['user']['id'])
                     return
 
-            if not self.switch.get(gid, True):
+            if not self.switch.get(gid, False):
                 print "Robot is off!"
                 return
 
