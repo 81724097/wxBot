@@ -209,7 +209,8 @@ class WXBot:
         :return:
         """
         if gid not in self.group_members:
-            return None
+            print "Group not found! {}".format(gid)
+            return []
         group = self.group_members[gid]
         group_member_name = []
         for member in group:
@@ -423,12 +424,13 @@ class WXBot:
         content = HTMLParser.HTMLParser().unescape(msg['Content'])
         msg_id = msg['MsgId']
 
-        msg_content = {}
-        msg_content['redraw'] = 0
-        msg_content['image_url'] = ''
-        msg_content['voice_url'] = ''
-        msg_content['is_hongbao'] = 0
-        msg_content['is_entergroup'] = 0
+        msg_content = {
+            'redraw': 0,
+            'image_url': '',
+            'voice_url': '',
+            'is_hongbao': 0,
+            'is_entergroup': 0
+        }
         if msg_type_id == 0:
             return {'type': 11, 'data': ''}
         elif msg_type_id == 2:  # File Helper
@@ -438,7 +440,7 @@ class WXBot:
             uid = content[:sp]
             content = content[sp:]
             content = content.replace('<br/>', '')
-            print content
+            print "Group content: %s" % content
             uid = uid[:-1]
             name = self.get_contact_prefer_name(self.get_contact_name(uid))
             if not name:
@@ -570,7 +572,7 @@ class WXBot:
                 print '    %s[Redraw]' % msg_prefix
         elif mtype == 10000:  # unknown, maybe red packet, or group invite
             msg_content['type'] = 12
-            if u'红包' in msg['Content']:
+            if u'红包' in msg['Content'] or 'Red packet' in msg['Content']:
                 print '有红包！'
                 msg_content['is_hongbao'] = 1
             elif u'邀请' in msg['Content']:
@@ -603,7 +605,6 @@ class WXBot:
         :param r: 原始微信消息
         """
         for msg in r['AddMsgList']:
-            #print 'origin msg:'+str(msg)
             user = {'id': msg['FromUserName'], 'name': 'unknown'}
             if msg['MsgType'] == 51:  # init message
                 msg_type_id = 0
