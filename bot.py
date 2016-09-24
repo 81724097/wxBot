@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import jandan
 from recomend import rec_zhihu
 from wxbot import *
 import ConfigParser
@@ -49,18 +50,55 @@ class TulingWXBot(WXBot):
         else:
             return u"知道啦"
 
+    @staticmethod
+    def append_map(words, value, to_dict):
+        for word in words:
+            to_dict[word] = value
+
+    def append_all(self, to):
+        self.append_map([
+            u'唱首歌',
+            u'推荐首歌',
+            u'唱歌'
+        ], 'rec_music', to)
+
+        self.append_map([
+            u'讲个段子',
+            u'来个段子',
+            u'说个段子'
+        ], 'rec_joke', to)
+
     def rec(self, msg, user_id):
         REC_MAP = {
             u'推荐歌曲': 'rec_music',
             u'技术文章': 'rec_tec_art',
             u'推荐电影': 'rec_film',
             u'推荐书': 'rec_book',
-            u'妹子图': 'rec_girls'
+            u'美女图': 'rec_girls',
+            u'段子': 'rec_joke'
         }
+        self.append_all(REC_MAP)
+
+        PIC_REC_MAP = {
+            u'妹子': 'parse_girl_pic',
+            u'汉子': 'parse_man_pic'
+        }
+        self.append_map([
+            u'帅哥',
+            u'肌肉男',
+            u'男神'
+        ], 'parse_man_pic', PIC_REC_MAP)
 
         for k, v in REC_MAP.iteritems():
-            if k in msg:
+            if k == msg:
                 return self.send_msg_by_uid(getattr(recomend, v)(), user_id)
+
+        for k, v in PIC_REC_MAP.iteritems():
+            if k == msg:
+                filename = getattr(jandan, v)()
+                res = self.send_image(filename, user_id)
+                os.remove(filename)
+                return res
         return False
 
     def handle_msg_all(self, msg):

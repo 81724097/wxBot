@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import jandan
 
 __author__ = 'iceke'
 import requests
@@ -67,6 +68,10 @@ def rec_girls():
     return 'http://jandan.net/ooxx/page-{}#comments'.format(key)
 
 
+def rec_joke():
+    return jandan.parse_joke()
+
+
 def recommend_small_movie():
     url = "https://btso.pw/search/"
     r = requests.get(url, timeout=8)
@@ -76,7 +81,7 @@ def recommend_small_movie():
     for a in a_all:
         fanhaos.append(a.get_text().split('.')[1])
         # print a
-    index = random.randint(1, len(fanhaos)-1)
+    index = random.randint(1, len(fanhaos) - 1)
     fanhao = fanhaos[index]
     print fanhao
     link = 'https://btso.pw/search/' + fanhao
@@ -139,9 +144,6 @@ def rec_tec_art():
         return '[{}] {}'.format(d.get('title'), d.get('url') or d.get('text'))
     except:
         return '哎呀,看什么技术文章啊,看个电影不好吗'
-
-
-
 
 
 def rec_zhihu():
