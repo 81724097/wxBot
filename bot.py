@@ -23,11 +23,13 @@ class TulingWXBot(WXBot):
             pass
         print 'tuling_key:', self.tuling_key
 
-    def tuling_auto_reply(self, uid, msg):
+    def tuling_auto_reply(self, uid, msg, other=None):
         if self.tuling_key:
             url = "http://www.tuling123.com/openapi/api"
             user_id = uid.replace('@', '')[:30]
             body = {'key': self.tuling_key, 'info': msg.encode('utf8'), 'userid': user_id}
+            if other:
+                body = dict(body.items() + other.items())
             r = requests.post(url, data=body)
             respond = json.loads(r.text)
             result = ''
@@ -99,6 +101,12 @@ class TulingWXBot(WXBot):
                 res = self.send_image(filename, user_id)
                 os.remove(filename)
                 return res
+
+        # bus
+        if u'公交' in msg:
+            return self.send_msg_by_uid(
+                    self.tuling_auto_reply(user_id, msg, other={'loc': '北京市'}), user_id)
+
         return False
 
     def handle_msg_all(self, msg):
