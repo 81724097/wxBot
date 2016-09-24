@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-from recomend import rec_music, rec_tec_art, rec_film, rec_zhihu
+from recomend import rec_zhihu
 from wxbot import *
 import ConfigParser
 import json
@@ -132,9 +132,9 @@ class TulingWXBot(WXBot):
                     reply += u'@' + member_name + u'\u2005' + ' '
                     reply1 += '@' + u'\u2005' + member_name + ' '
                     reply2 += '@' + member_name + ('\\u%s' % a).decode('unicode-escape')
-                    reply3 += '@' + member_name + ('\u2005').decode('unicode-escape')
-                    reply4 += '@' + ('\u2005').decode('unicode-escape') + member_name
-                    reply5 += '@' + ('\\u2005').decode('unicode-escape') + member_name
+                    reply3 += '@' + member_name + '\u2005'.decode('unicode-escape')
+                    reply4 += '@' + '\u2005'.decode('unicode-escape') + member_name
+                    reply5 += '@' + '\\u2005'.decode('unicode-escape') + member_name
 
                 self.send_msg_by_uid(reply, msg['user']['id'])
 
@@ -170,7 +170,7 @@ class TulingWXBot(WXBot):
                     self.send_msg_by_uid(reply, msg['user']['id'])
 
                 if is_at_me is False:
-                    src_name = msg['user']['name']
+                    # src_name = msg['user']['name']
                     reply = ''
                     if self.rec(msg['content']['desc'], msg['user']['id']):
                         return
