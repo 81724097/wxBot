@@ -79,4 +79,20 @@ def send_msg(user_name, msg):
     print json.dumps(resp)
     # print '情感: %s' % resp.get('emotion', [{}])[0].get('value')
     data_list = resp['data']
+    cmd = data_list[0].get('cmd')
+    if cmd:
+        res = globals()['_parse_{}'.format(cmd)](data_list)
+        if res:
+            return res
     return [x.get('value', '...') for x in data_list]
+
+
+def _parse_news(arg):
+    data = arg[0]
+    res = [data.get('value')]
+    items = data['data']
+    info = ''
+    for item in items:
+        info += '[%s][%s] %s\n' % (item['source'], item['title'], item['link'])
+    res.append(info)
+    return res
