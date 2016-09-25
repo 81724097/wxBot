@@ -56,7 +56,7 @@ class SafeSession(requests.Session):
                 continue
 
 
-class WXBot:
+class WXBot(object):
     """WXBot功能类"""
 
     def __init__(self):
