@@ -23,6 +23,10 @@ class TulingWXBot(WXBot):
             pass
         print 'tuling_key:', self.tuling_key
 
+    def schedule(self):
+        self.send_msg(u'tb', u'schedule')
+        time.sleep(1)
+
     def tuling_auto_reply(self, uid, msg, other=None):
         if self.tuling_key:
             url = "http://www.tuling123.com/openapi/api"
