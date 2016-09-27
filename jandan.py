@@ -38,12 +38,11 @@ def parse_girl_pic():
     url = 'http://jandan.net/ooxx'
     page = get_page_source(url)
     soup = BeautifulSoup(page)
-    soup = soup.ol
-    lis = soup.find_all('li')
+    lis = soup.find_all('a', attrs={'target': '_blank', 'class': 'view_img_link'})
     l = len(lis)
     picked = lis[random.randint(0, l - 1)]
-    img = picked.find('img')
-    src = _format_url(img['src'])
+    print picked
+    src = _format_url(picked['href'])
     filename = src.split('/')[-1]
     os.system("wget {} -P /tmp/".format(src))
     return '/tmp/{}'.format(filename)
